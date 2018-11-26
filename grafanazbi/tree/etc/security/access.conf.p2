@@ -1,0 +1,11 @@
+# Rule: allow root locally
++ : root : LOCAL cron crond :0 tty1 tty2 tty3 tty4 tty5 tty6
+
+# Rule: allow root remotely
++ : root : ALL
+
++ : (SGG-OMN-HADOOP-Admins) : ALL
+
+# Rule: deny everything else
+- : ALL : ALL
+

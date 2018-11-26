@@ -1,0 +1,3 @@
+name: docker.grafana
+exclude: [Gemfile]
+markdown: kramdown

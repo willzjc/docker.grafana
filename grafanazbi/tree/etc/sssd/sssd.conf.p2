@@ -1,0 +1,59 @@
+# sssd config file template
+
+[domain/default]
+
+[sssd]
+config_file_version = 2
+services = nss, pam
+
+domains = {{KRB_REALM}}
+debug_level = 4
+[nss]
+[pam]
+
+[domain/{{KRB_REALM}}]
+debug_level = 1
+enumerate = false
+id_provider = ldap
+chpass_provider = krb5
+
+ldap_uri = {% for server in KRB_SERVERS|split:" " %}ldaps://{{server|split:":"|first}}:636{% if forloop.Counter != KRB_SERVERS|split:" "|length %}, {% endif %}{% endfor %}
+krb5_server = {% for server in KRB_SERVERS|split:" " %}{{server|split:":"|first}}{% if forloop.Counter != KRB_SERVERS|split:" "|length %}, {% endif %}{% endfor %}
+
+ldap_id_use_start_tls = False
+ldap_user_search_base = {{LDAP_USER_SEARCH_BASE}}
+ldap_group_search_base = {{LDAP_GROUP_SEARCH_BASE}}
+ldap_schema = rfc2307bis
+ldap_default_bind_dn = {{LDAP_BIND_USER_DN}}
+ldap_default_authtok_type = password
+ldap_default_authtok =  {{LDAP_BIND_PASS}}
+ldap_force_upper_case_realm = true
+auth_provider = krb5
+cache_credentials = true
+entry_cache_timeout = 604800
+ldap_purge_cache_timeout = 2700
+krb5_realm = {{KRB_REALM}}
+krb5_ccachedir = /tmp
+krb5_auth_timeout = 15
+ldap_user_object_class = person
+ldap_user_modify_timestamp = whenChanged
+ldap_user_home_directory = unixHomeDirectory
+ldap_user_shell = loginShell
+ldap_user_name = sAMAccountName
+ldap_user_uid_number = uidNumber
+ldap_user_gid_number = gidNumber
+ldap_group_object_class = group
+ldap_group_modify_timestamp = whenChanged
+ldap_group_object_class = group
+ldap_group_name = sAMAccountName
+ldap_group_gid_number = gidNumber
+
+case_sensitive = false
+
+krb5_canonicalize = false
+ldap_tls_cacert = /etc/ssl/certs/ca-certificates.crt
+ldap_referrals = False
+ldap_tls_reqcert = never
+krb5_use_kdcinfo = false
+
+

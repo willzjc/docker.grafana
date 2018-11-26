@@ -1,0 +1,4 @@
+# Packages for Cloudera's Distribution for Hadoop, Version 5, on Ubuntu 14.04 amd64       
+deb [arch=amd64] https://artifactory.ai.cba/artifactory/cloudera/cdh5/ubuntu/xenial/amd64/cdh xenial-cdh5 contrib
+deb-src https://artifactory.ai.cba/artifactory/cloudera/cdh5/ubuntu/xenial/amd64/cdh xenial-cdh5 contrib
+

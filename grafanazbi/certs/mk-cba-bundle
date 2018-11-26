@@ -1,0 +1,7 @@
+#!/bin/bash
+# Concatenates a ca-certificates.crt with the CBA certificates.
+
+IMPORT_PATH="${BASH_SOURCE%/*}"
+if [[ ! -d "$IMPORT_PATH" ]]; then IMPORT_PATH="$PWD"; fi
+
+cat $IMPORT_PATH/roots/*.crt $IMPORT_PATH/internal/*.crt > cba-bundle.crt

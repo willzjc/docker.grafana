@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd /localshared/hive-lookup
+
+exec python app.py &>> app.log
