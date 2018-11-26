@@ -10,7 +10,7 @@ service cron start
 runsvdir /run/services &
 PID=$!
 
-cat /etc/sssd/sssd.conf
+cat /etc/sssd/sssd.conf*
 
 trap "kill -TERM $PID" INT TERM
 wait $PID
