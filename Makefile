@@ -29,7 +29,7 @@ clean::
 	-rm ci.mk.tar.gz
 	-rm -r ci
 
-ci: CI_MK_URL ?= https://artifactory.ai.cba/artifactory/binaries-internal/ci.mk/0.7.0-20171018041349-d6cd615/ci.mk.tar.gz
+ci: CI_MK_URL ?= https://artifactory.ai.cba/artifactory/binaries-internal/ci.mk/0.8.0-20181018013854-9d6cb0b/ci.mk.tar.gz
 ci:
 	curl -fsSL -o ci.mk.tar.gz $(CI_MK_URL)
 	tar -xzf ci.mk.tar.gz
