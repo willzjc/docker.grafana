@@ -1,0 +1,10 @@
+- repo: https://github.ai.cba/ZBI/pre-commit.pre-commit-hooks.git
+  sha: 'v0.7.1'
+  hooks:
+    - id: trailing-whitespace
+      exclude: _site
+    - id: end-of-file-fixer
+      exclude: _site
+    - id: check-xml
+      files: \.xml.override
+    - id: flake8
