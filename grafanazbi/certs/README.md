@@ -7,7 +7,7 @@ It is broken into two parts:
   from the Mozilla list.
 - `internal/` contains the list of CAs which need to be trusted by software
   running on the internal CBA network.
-  
+
 This format has been chosen to provide a generic way to inject this information
 into Docker containers.
 
