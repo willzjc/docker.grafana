@@ -10,16 +10,68 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --allow-
     less \
     grep \
     sed \
-    vim \
+    nano \
     util-linux \
     locales \
     iproute2 \
     oddjob-mkhomedir \
+    # host framework
     dnsutils \
     net-tools \
     inetutils-ping \
-    inetutils-traceroute
-
+    inetutils-traceroute \
+    arping \
+    tcpdump \
+    tcptraceroute \
+    telnet \
+    tzdata \
+    less \
+    lsof \
+    ca-certificates \
+    # init system
+    runit \
+    # system
+    nginx-extras \
+    fcgiwrap \
+    syslog-ng \
+    # authentication stack
+    openssh-server \
+    sssd \
+    sssd-ldap \
+    sssd-ad \
+    libpam-sss \
+    libnss-sss \
+    libsasl2-2 \
+    libsasl2-modules-ldap \
+    sasl2-bin \
+    krb5-user \
+    netcat-openbsd \
+    pamtester \
+    mysql-client \
+    wget \
+    vim \
+    jq \
+    curl \
+    openjdk-8-jdk \
+    hadoop-client \
+    hive \
+    python3 \
+    python-pip \
+    python-dev \
+    python3-pip && \
+    # Templating engine
+    wget -O /usr/local/bin/p2 $URL_P2CLI && \
+    chmod +x /usr/local/bin/p2 && \
+    # Cleanup
+    apt-get autoremove -y && \
+    # Delete nginx default configuration.
+    rm -rf /etc/nginx/sites-enabled /etc/nginx/sites-available /etc/nginx/snippets /etc/nginx/conf.d && \
+    # Delete pam_access default config
+    rm -f /etc/security/access.conf \
+    # Delete kerberos default config
+    rm -f /etc/krb5.conf \
+    # Delete sssd default config
+    rm -f /etc/sssd/sssd/conf
 
 ARG GF_UID="472"
 ARG GF_GID="472"
