@@ -54,7 +54,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --allow-
     curl \
     openjdk-8-jdk \
     hadoop-client \
-    hive \
     python3 \
     python-pip \
     python-dev \
