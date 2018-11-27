@@ -52,25 +52,23 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --allow-
     vim \
     jq \
     curl \
-    openjdk-8-jdk \
-    hadoop-client \
     python3 \
     python-pip \
     python-dev \
-    python3-pip && \
-    # Templating engine
-    wget -O /usr/local/bin/p2 $URL_P2CLI && \
-    chmod +x /usr/local/bin/p2 && \
-    # Cleanup
-    apt-get autoremove -y && \
-    # Delete nginx default configuration.
-    rm -rf /etc/nginx/sites-enabled /etc/nginx/sites-available /etc/nginx/snippets /etc/nginx/conf.d && \
-    # Delete pam_access default config
-    rm -f /etc/security/access.conf \
-    # Delete kerberos default config
-    rm -f /etc/krb5.conf \
-    # Delete sssd default config
-    rm -f /etc/sssd/sssd/conf
+    python3-pip
+    # # Templating engine
+    # # wget -O /usr/local/bin/p2 $URL_P2CLI && \
+    # chmod +x /usr/local/bin/p2 && \
+    # # Cleanup
+    # apt-get autoremove -y && \
+    # # Delete nginx default configuration.
+    # rm -rf /etc/nginx/sites-enabled /etc/nginx/sites-available /etc/nginx/snippets /etc/nginx/conf.d && \
+    # # Delete pam_access default config
+    # rm -f /etc/security/access.conf \
+    # # Delete kerberos default config
+    # rm -f /etc/krb5.conf \
+    # # Delete sssd default config
+    # rm -f /etc/sssd/sssd/conf
 
 ARG GF_UID="472"
 ARG GF_GID="472"
