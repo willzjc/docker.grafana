@@ -1,4 +1,5 @@
 *.pyc
 .DS_Store
 grafana-latest.linux-x64.tar.gz
+grafanazbi/grafana-latest.linux-x64.tar.gz
 
