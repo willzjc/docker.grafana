@@ -1,80 +1,13 @@
-ARG DOCKER_PREFIX=docker.artifactory.ai.cba/library/
+#FROM debian:stretch-slim
+#ARG DOCKER_PREFIX=docker.artifactory.ai.cba/library/
+ARG DOCKER_PREFIX=''
 FROM ${DOCKER_PREFIX}ubuntu:18.04
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --allow-unauthenticated \
-    # Basic framework
-    sudo \
-    coreutils \
-    rsync \
-    procps \
-    less \
-    grep \
-    sed \
-    nano \
-    util-linux \
-    locales \
-    iproute2 \
-    oddjob-mkhomedir \
-    # host framework
-    dnsutils \
-    net-tools \
-    inetutils-ping \
-    inetutils-traceroute \
-    arping \
-    tcpdump \
-    tcptraceroute \
-    telnet \
-    tzdata \
-    less \
-    lsof \
-    ca-certificates \
-    # init system
-    runit \
-    # system
-    nginx-extras \
-    fcgiwrap \
-    syslog-ng \
-    # authentication stack
-    openssh-server \
-    sssd \
-    sssd-ldap \
-    sssd-ad \
-    libpam-sss \
-    libnss-sss \
-    libsasl2-2 \
-    libsasl2-modules-ldap \
-    sasl2-bin \
-    krb5-user \
-    netcat-openbsd \
-    pamtester \
-    mysql-client \
-    wget \
-    vim \
-    jq \
-    curl \
-    python3 \
-    python-pip \
-    python-dev \
-    python3-pip
-    # # Templating engine
-    # # wget -O /usr/local/bin/p2 $URL_P2CLI && \
-    # chmod +x /usr/local/bin/p2 && \
-    # # Cleanup
-    # apt-get autoremove -y && \
-    # # Delete nginx default configuration.
-    # rm -rf /etc/nginx/sites-enabled /etc/nginx/sites-available /etc/nginx/snippets /etc/nginx/conf.d && \
-    # # Delete pam_access default config
-    # rm -f /etc/security/access.conf \
-    # # Delete kerberos default config
-    # rm -f /etc/krb5.conf \
-    # # Delete sssd default config
-    # rm -f /etc/sssd/sssd/conf
+#ARG GRAFANA_URL="https://s3-us-west-2.amazonaws.com/grafana-releases/master/grafana-latest.linux-x64.tar.gz"
+ARG GRAFANA_URL=grafana-latest.linux-x64.tar.gz
 
 ARG GF_UID="472"
 ARG GF_GID="472"
-ARG GRAFANA_URL=grafana-latest.linux-x64.tar.gz
-COPY tree /
-COPY grafana-latest.linux-x64.tar.gz /grafana-latest.linux-x64.tar.gz
 
 ENV PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     GF_PATHS_CONFIG="/etc/grafana/grafana.ini" \
@@ -84,14 +17,14 @@ ENV PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bi
     GF_PATHS_PLUGINS="/var/lib/grafana/plugins" \
     GF_PATHS_PROVISIONING="/etc/grafana/provisioning"
 
-RUN apt-get install -y --allow-unauthenticated && apt-get install -qq -y tar libfontconfig curl ca-certificates
+COPY grafana-latest.linux-x64.tar.gz /grafana-latest.linux-x64.tar.gz
 
-RUN mkdir -p "$GF_PATHS_HOME/.aws" && \
-    cat "/$GRAFANA_URL" | tar xfvz - --strip-components=1 -C "$GF_PATHS_HOME" && \
+RUN apt-get update && apt-get install -qq -y tar libfontconfig curl ca-certificates && \
+    mkdir -p "$GF_PATHS_HOME/.aws" && \
+    cat "$GRAFANA_URL" | tar xfvz - --strip-components=1 -C "$GF_PATHS_HOME" && \
     apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN groupadd -r -g $GF_GID grafana && \
+    rm -rf /var/lib/apt/lists/* && \
+    groupadd -r -g $GF_GID grafana && \
     useradd -r -u $GF_UID -g grafana grafana && \
     mkdir -p "$GF_PATHS_PROVISIONING/datasources" \
              "$GF_PATHS_PROVISIONING/dashboards" \
@@ -106,6 +39,7 @@ RUN groupadd -r -g $GF_GID grafana && \
 EXPOSE 3000
 
 COPY ./run.sh /run.sh
+RUN chmod 775 /run.sh
 
 USER grafana
 WORKDIR /

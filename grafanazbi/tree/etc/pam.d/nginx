@@ -1,7 +1,0 @@
-# nginx proxy PAM ACLs
-account  required     pam_access.so
-@include common-auth
-@include common-account
-@include common-session
-@include common-password
-

@@ -1,2 +1,0 @@
-# Import crons from /localsharec
-*/5 * * * * root cp -r /localshared/etc/cron.d/* /etc/cron.d/ && service cron reload

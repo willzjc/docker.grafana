@@ -1,6 +1,0 @@
-Name: Limit account access
-Default: yes
-Priority: 900
-Account-Type: Additional
-Account:
-	required			pam_access.so

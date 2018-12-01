@@ -1,5 +1,0 @@
-#!/bin/sh
-
-[ ! -e /run/log/sssd ] && mkfifo /run/log/sssd
-
-exec sssd -i > /run/log/sssd 2>&1
