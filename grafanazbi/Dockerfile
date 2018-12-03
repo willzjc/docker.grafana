@@ -20,6 +20,7 @@ ENV PATH=/usr/share/grafana/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bi
 COPY grafana-latest.linux-x64.tar.gz /grafana-latest.linux-x64.tar.gz
 
 RUN apt-get update && apt-get install -qq -y tar libfontconfig curl ca-certificates && \
+    apt-get install -y telnet openssh-server && \
     mkdir -p "$GF_PATHS_HOME/.aws" && \
     cat "$GRAFANA_URL" | tar xfvz - --strip-components=1 -C "$GF_PATHS_HOME" && \
     apt-get autoremove -y && \
@@ -36,6 +37,21 @@ RUN apt-get update && apt-get install -qq -y tar libfontconfig curl ca-certifica
     chown -R grafana:grafana "$GF_PATHS_DATA" "$GF_PATHS_HOME/.aws" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS" && \
     chmod 777 "$GF_PATHS_DATA" "$GF_PATHS_HOME/.aws" "$GF_PATHS_LOGS" "$GF_PATHS_PLUGINS"
 
+# SSH Daemon
+RUN mkdir /var/run/sshd
+RUN echo 'root:screencast' | chpasswd
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+
+# Grafana section
 EXPOSE 3000
 
 COPY ./run.sh /run.sh
